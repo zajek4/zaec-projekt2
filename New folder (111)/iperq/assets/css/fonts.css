@@ -1,0 +1,169 @@
+/**
+ * IPERQ local web fonts.
+ * WOFF2 is used on the frontend to reduce transfer size and avoid external font requests.
+ */
+
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-Extralight.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 200;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-ExtralightItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 200;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-Light.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-LightItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-Regular.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-Italic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-Medium.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-MediumItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-Semibold.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-SemiboldItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 600;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-Bold.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Author";
+	src: url("../fonts/author/Author-BoldItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-Light.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-LightItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-Regular.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-Italic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-Medium.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-MediumItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-Bold.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-BoldItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-Black.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 900;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Satoshi";
+	src: url("../fonts/satoshi/Satoshi-BlackItalic.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 900;
+	font-display: swap;
+}
+
+/* Legacy landing-page font, now self-hosted to avoid a Google Fonts round-trip. */
+@font-face {
+	font-family: "Plus Jakarta Sans";
+	src: url("../fonts/plus-jakarta/PlusJakartaSans-Bold.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}

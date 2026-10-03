@@ -1,0 +1,1081 @@
+/**
+ * IPERQ global header
+ * Fixed desktop navigation that morphs into the existing compact/mobile design.
+ * Mobile/tablet keeps the existing expandable mint header behaviour.
+ */
+
+/* --------------------------------------------------------------------------
+ * Base / fixed positioning
+ * -------------------------------------------------------------------------- */
+
+.biz-header {
+	--iperq-header-morph-duration: 1s;
+	--iperq-header-morph-ease: cubic-bezier(.16,1,.3,1);
+	--iperq-header-fade-ease: cubic-bezier(.4,0,.2,1);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: 1000;
+	height: 128px;
+	padding: 0;
+	background: transparent;
+	transition:
+		height var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		padding var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		top .34s var(--iperq-header-morph-ease);
+}
+
+body.admin-bar .biz-header {
+	top: 32px;
+}
+
+.biz-header-spacer {
+	display: block;
+	height: 128px;
+}
+
+.biz-header .biz-header__container {
+	position: relative;
+	z-index: 3;
+	width: 100%;
+	max-width: 1400px;
+	height: auto;
+	margin-inline: auto;
+	/* Keep the compact radius present even while visually transparent. This gives
+	 * the morph surface a continuous geometry instead of introducing a hard edge. */
+	border-radius: 16px;
+	background: transparent;
+	box-shadow: none;
+	overflow: visible;
+	isolation: isolate;
+	transition:
+		width var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		max-width var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		padding var(--iperq-header-morph-duration) var(--iperq-header-morph-ease);
+}
+
+/*
+ * Dedicated mint morph surface. It is revealed with clip-path rather than
+ * opacity, so the transition never passes through a washed-out/white state.
+ * The color is always the exact compact/mobile mint from the first visible px.
+ */
+.biz-header .biz-header__container::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	border-radius: inherit;
+	background: var(--iperq-mint);
+	box-shadow: 0 18px 42px rgba(29,0,53,0);
+	-webkit-clip-path: inset(0 50% round 16px);
+	clip-path: inset(0 50% round 16px);
+	pointer-events: none;
+	transition:
+		-webkit-clip-path .82s var(--iperq-header-morph-ease) .06s,
+		clip-path .82s var(--iperq-header-morph-ease) .06s,
+		box-shadow .72s ease .18s;
+}
+
+/* --------------------------------------------------------------------------
+ * Desktop navigation
+ * -------------------------------------------------------------------------- */
+
+.biz-nav {
+	display: grid;
+	position: relative;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	align-items: center;
+	gap: 24px;
+	width: 100%;
+	height: 128px;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	transition: height var(--iperq-header-morph-duration) var(--iperq-header-morph-ease);
+}
+
+.biz-nav__group {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+}
+
+.biz-nav__group--left {
+	justify-self: start;
+	max-width: 100%;
+	transform: translate3d(0,0,0);
+	transition:
+		opacity .34s var(--iperq-header-fade-ease),
+		transform .64s var(--iperq-header-morph-ease),
+		max-width .34s var(--iperq-header-morph-ease);
+}
+
+.biz-nav__group--right {
+	justify-self: end;
+	justify-content: flex-end;
+	gap: 28px;
+	padding-right: 0;
+	transition:
+		gap .32s var(--iperq-header-morph-ease),
+		padding-right var(--iperq-header-morph-duration) var(--iperq-header-morph-ease);
+}
+
+.biz-nav__menu {
+	display: flex;
+	align-items: center;
+	gap: 36px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.biz-nav__menu--right {
+	gap: 28px;
+	max-width: 680px;
+	overflow: visible;
+	transform: translate3d(0,0,0);
+	transition:
+		opacity .34s var(--iperq-header-fade-ease),
+		transform .64s var(--iperq-header-morph-ease),
+		max-width .34s var(--iperq-header-morph-ease);
+}
+
+.biz-nav__menu li {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.biz-nav__menu > li > a,
+.biz-nav__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--iperq-white);
+	font-family: "Satoshi", Arial, sans-serif;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 24px;
+	white-space: nowrap;
+	text-decoration: none;
+	transition: color .18s ease, opacity .18s ease, background-color .18s ease;
+}
+
+.biz-nav__menu > li > a:hover,
+.biz-nav__menu > li > a:focus,
+.biz-nav__link:hover,
+.biz-nav__link:focus {
+	color: var(--iperq-white);
+	text-decoration: none;
+	opacity: .78;
+	outline: none;
+}
+
+/* Parent item reserves the pill dimensions in both states so the menu never jumps. */
+.biz-nav__menu > .menu-item-has-children > a {
+	min-height: 34px;
+	padding: 5px 16px;
+	border-radius: 999px;
+}
+
+.biz-nav__menu > .menu-item-has-children > a::after {
+	content: "";
+	display: block;
+	flex: 0 0 20px;
+	width: 20px;
+	height: 20px;
+	background-color: currentColor;
+	-webkit-mask: url('../images/header/dropdown-chevron.svg') center / 20px 20px no-repeat;
+	mask: url('../images/header/dropdown-chevron.svg') center / 20px 20px no-repeat;
+	transition: transform .22s ease;
+}
+
+.biz-nav__menu > .menu-item-has-children.is-submenu-open > a,
+.biz-nav__menu > .menu-item-has-children.is-submenu-open > a:hover,
+.biz-nav__menu > .menu-item-has-children.is-submenu-open > a:focus {
+	background: var(--iperq-mint);
+	color: var(--iperq-indigo);
+	opacity: 1;
+}
+
+.biz-nav__menu > .menu-item-has-children.is-submenu-open > a::after {
+	transform: rotate(180deg);
+}
+
+/* Desktop submenu is intentionally not a dropdown card: it sits directly on the page. */
+.biz-nav__menu .sub-menu {
+	position: absolute;
+	top: calc(100% + 10px);
+	left: 16px;
+	z-index: 40;
+	min-width: 245px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(6px);
+	transition: opacity .18s ease, visibility .18s ease, transform .22s ease;
+}
+
+.biz-nav__menu--right .sub-menu {
+	left: auto;
+	right: 0;
+}
+
+.biz-nav__menu .menu-item-has-children.is-submenu-open > .sub-menu {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateY(0);
+}
+
+.biz-nav__menu .sub-menu li + li {
+	margin-top: 2px;
+}
+
+.biz-nav__menu .sub-menu a {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	min-height: 44px;
+	padding: 8px 0;
+	border-radius: 0;
+	color: var(--iperq-white);
+	font-family: "Satoshi", Arial, sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 22px;
+	text-decoration: none;
+	transition: color .16s ease, opacity .16s ease, transform .16s ease;
+}
+
+.biz-nav__menu .sub-menu a:hover,
+.biz-nav__menu .sub-menu a:focus {
+	background: transparent;
+	color: var(--iperq-mint);
+	text-decoration: none;
+	transform: translateX(2px);
+	outline: none;
+}
+
+/* --------------------------------------------------------------------------
+ * Logo + actions
+ * -------------------------------------------------------------------------- */
+
+.biz-logo {
+	display: block;
+	width: 188px;
+	height: 85px;
+	color: var(--iperq-white);
+	transition:
+		width var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		height var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		color .38s ease;
+}
+
+.biz-logo__mark {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: currentColor;
+	-webkit-mask-image: var(--iperq-header-logo);
+	mask-image: var(--iperq-header-logo);
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-position: center;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+}
+
+.biz-nav__actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	transition: gap .3s var(--iperq-header-morph-ease);
+}
+
+.biz-nav__action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 48px;
+	border-radius: 8px;
+	box-shadow: none !important;
+	font-family: "Satoshi", Arial, sans-serif;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 24px;
+	white-space: nowrap;
+	text-decoration: none;
+	transition:
+		width var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		height var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		gap var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		font-size .5s var(--iperq-header-morph-ease),
+		font-weight .5s ease,
+		border-radius .5s var(--iperq-header-morph-ease),
+		border-color .5s ease,
+		background-color .5s ease,
+		color .38s ease,
+		opacity .2s ease,
+		transform .2s ease;
+}
+
+.biz-nav__action:hover,
+.biz-nav__action:focus {
+	box-shadow: none !important;
+	text-decoration: none;
+	transform: translateY(-1px);
+}
+
+.biz-header .biz-nav__login,
+.biz-header .biz-nav__login:visited {
+	width: 99px;
+	border: 1px solid rgba(255,255,255,.2);
+	color: var(--iperq-white);
+	background: transparent;
+	overflow: hidden;
+	transform: translate3d(0,0,0);
+	transition:
+		width .3s var(--iperq-header-morph-ease),
+		opacity .3s var(--iperq-header-fade-ease),
+		transform .58s var(--iperq-header-morph-ease),
+		border-color .24s ease;
+}
+
+.biz-header .biz-nav__started,
+.biz-header .biz-nav__started:visited,
+.biz-header .biz-nav__started:hover,
+.biz-header .biz-nav__started:focus {
+	width: 173px;
+	gap: 8px;
+	border: 1px solid var(--iperq-mint);
+	background: var(--iperq-mint);
+	color: var(--iperq-indigo) !important;
+}
+
+.biz-nav__started img {
+	width: 24px;
+	height: 24px;
+	flex: 0 0 24px;
+	transition:
+		width var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		height var(--iperq-header-morph-duration) var(--iperq-header-morph-ease),
+		flex-basis var(--iperq-header-morph-duration) var(--iperq-header-morph-ease);
+}
+
+/* --------------------------------------------------------------------------
+ * Shared compact navigation controls
+ * Used by mobile/tablet and the scrolled desktop state.
+ * -------------------------------------------------------------------------- */
+
+.biz-menu-toggle {
+	display: inline-flex;
+	position: absolute;
+	left: 16px;
+	top: 50%;
+	z-index: 4;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px;
+	width: auto;
+	height: 40px;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none !important;
+	color: var(--iperq-indigo);
+	cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(-50%) translateX(-14px) scale(.96);
+	transition:
+		opacity .24s ease,
+		transform .34s var(--iperq-header-morph-ease),
+		visibility 0s linear .3s;
+}
+
+.biz-menu-toggle:hover,
+.biz-menu-toggle:focus,
+.biz-menu-toggle:active {
+	border: 0;
+	background: transparent;
+	box-shadow: none !important;
+	color: var(--iperq-indigo);
+	outline: none;
+}
+
+.biz-menu-toggle:focus-visible {
+	outline: 2px solid var(--iperq-indigo);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+.biz-menu-icon {
+	display: block;
+	width: 30px;
+	height: 30px;
+	flex: 0 0 30px;
+	overflow: visible;
+}
+
+.biz-menu-toggle__label {
+	display: block;
+	font-family: "Satoshi", Arial, sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 20px;
+	letter-spacing: .01em;
+}
+
+.biz-menu-icon__line {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	transform-box: fill-box;
+	transform-origin: center;
+	transition:
+		transform .46s cubic-bezier(.22,1,.36,1),
+		opacity .26s ease;
+}
+
+.biz-menu-toggle[aria-expanded="true"] .biz-menu-icon__line--top {
+	transform: translate(-4.5px, 9px) rotate(45deg) scaleX(1.58);
+}
+
+.biz-menu-toggle[aria-expanded="true"] .biz-menu-icon__line--middle {
+	opacity: 0;
+	transform: scaleX(.2);
+}
+
+.biz-menu-toggle[aria-expanded="true"] .biz-menu-icon__line--bottom {
+	transform: translate(4.5px, -9px) rotate(-45deg) scaleX(1.58);
+}
+
+/*
+ * The compact menu grows to its intrinsic content height instead of animating
+ * toward an arbitrary max-height. The closed 0fr track keeps the shell at 61px.
+ */
+.biz-mobile-panel {
+	display: grid;
+	position: static;
+	grid-template-rows: 0fr;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(-5px);
+	will-change: grid-template-rows, opacity, transform;
+	transition:
+		grid-template-rows .64s cubic-bezier(.22,1,.36,1),
+		opacity .26s ease,
+		transform .52s cubic-bezier(.22,1,.36,1),
+		visibility 0s linear .64s;
+}
+
+.biz-mobile-panel.is-open {
+	grid-template-rows: 1fr;
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateY(0);
+	transition:
+		grid-template-rows .64s cubic-bezier(.22,1,.36,1),
+		opacity .3s ease,
+		transform .52s cubic-bezier(.22,1,.36,1),
+		visibility 0s linear 0s;
+}
+
+.biz-mobile-panel__inner {
+	width: 100%;
+	min-height: 0;
+	height: auto;
+	padding: 0 24px;
+	overflow: hidden;
+}
+
+.biz-mobile-nav {
+	width: 100%;
+	margin: 0;
+	padding: 18px 0 26px;
+}
+
+.biz-mobile-nav__menu {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 4px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.biz-mobile-nav__menu--secondary {
+	margin-top: 4px;
+	padding-top: 0;
+	border: 0;
+}
+
+.biz-mobile-nav__menu li {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.biz-mobile-nav__menu > li > a,
+.biz-mobile-nav__login {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	min-height: 56px;
+	padding: 6px 0;
+	color: var(--iperq-indigo);
+	font-family: "Author", "Satoshi", sans-serif;
+	font-size: 40px;
+	font-weight: 700;
+	line-height: .98;
+	letter-spacing: -.6px;
+	text-decoration: none;
+	opacity: 0;
+	transform: translate3d(0, -8px, 0);
+	transition:
+		opacity .42s cubic-bezier(.22,1,.36,1),
+		transform .48s cubic-bezier(.22,1,.36,1);
+}
+
+.biz-mobile-panel.is-open:not(.is-closing) .biz-mobile-nav__menu > li > a,
+.biz-mobile-panel.is-open:not(.is-closing) .biz-mobile-nav__login {
+	opacity: 1;
+	transform: translate3d(0, 0, 0);
+	transition-delay: var(--iperq-mobile-menu-delay, 20ms);
+}
+
+/* Exit is completed before the panel starts collapsing, so links remain
+ * visible for their whole animation instead of being clipped by the 0fr row. */
+.biz-mobile-panel.is-closing {
+	pointer-events: none;
+}
+
+.biz-mobile-panel.is-closing .biz-mobile-nav__menu > li > a,
+.biz-mobile-panel.is-closing .biz-mobile-nav__login {
+	transition-duration: .26s;
+	transition-timing-function: cubic-bezier(.4,0,1,1);
+	transition-delay: var(--iperq-mobile-menu-exit-delay, 0ms);
+}
+
+.biz-mobile-nav__menu > li > a:hover,
+.biz-mobile-nav__menu > li > a:focus,
+.biz-mobile-nav__login:hover,
+.biz-mobile-nav__login:focus {
+	color: var(--iperq-indigo);
+	opacity: .68;
+	text-decoration: none;
+	outline: none;
+}
+
+.biz-mobile-nav__menu > .menu-item-has-children > a::after {
+	content: "";
+	display: block;
+	flex: 0 0 33px;
+	width: 33px;
+	height: 33px;
+	margin-left: auto;
+	background-color: currentColor;
+	-webkit-mask: url('../images/header/dropdown-chevron.svg') center / 33px 33px no-repeat;
+	mask: url('../images/header/dropdown-chevron.svg') center / 33px 33px no-repeat;
+	transform-origin: center;
+	transition: transform .52s cubic-bezier(.22,1,.36,1), opacity .24s ease;
+}
+
+.biz-mobile-nav__menu > .menu-item-has-children > a:active::after {
+	opacity: .7;
+}
+
+.biz-mobile-nav__menu > .menu-item-has-children.is-submenu-open > a::after {
+	transform: rotate(180deg);
+}
+
+.biz-mobile-nav__menu .sub-menu {
+	position: static;
+	display: block;
+	width: 100%;
+	height: 0;
+	margin: 0;
+	padding: 0 0 0 16px;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	opacity: 0;
+	visibility: hidden;
+	overflow: hidden;
+	pointer-events: none;
+	transform: translate3d(0, -7px, 0);
+	transition:
+		height .56s cubic-bezier(.22,1,.36,1),
+		opacity .3s ease,
+		transform .5s cubic-bezier(.22,1,.36,1),
+		padding .5s cubic-bezier(.22,1,.36,1),
+		visibility 0s linear .56s;
+	will-change: height, opacity, transform;
+}
+
+.biz-mobile-nav__menu .menu-item-has-children.is-submenu-open > .sub-menu {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translate3d(0, 0, 0);
+	transition-delay: 0s;
+}
+
+.biz-mobile-nav__menu .sub-menu a {
+	display: flex;
+	align-items: center;
+	min-height: 38px;
+	padding: 7px 0;
+	border-radius: 0;
+	color: rgba(45,0,81,.72);
+	font-family: "Satoshi", Arial, sans-serif;
+	font-size: 17px;
+	font-weight: 600;
+	line-height: 24px;
+	text-decoration: none;
+	transition: opacity .18s ease, transform .18s ease;
+}
+
+.biz-mobile-nav__menu .sub-menu a:hover,
+.biz-mobile-nav__menu .sub-menu a:focus {
+	background: transparent;
+	color: var(--iperq-indigo);
+	opacity: 1;
+	text-decoration: none;
+	transform: translateX(3px);
+	outline: none;
+}
+
+.biz-mobile-nav__login,
+.biz-mobile-nav__login:visited,
+.biz-mobile-nav__login:active {
+	margin-top: 0;
+	padding-top: 6px;
+	border: 0;
+	color: var(--iperq-indigo) !important;
+}
+
+/* --------------------------------------------------------------------------
+ * Desktop scroll morph (> 900px)
+ * -------------------------------------------------------------------------- */
+
+@media (min-width: 901px) {
+	/* Desktop return is the native reverse of .is-desktop-compact. Only the
+	 * mint surface gets an exit-specific fade; the component geometry and all
+	 * controls continue using the exact same transitions in reverse. */
+	.biz-header.is-desktop-returning .biz-header__container::before {
+		animation: iperq-header-background-out .34s var(--iperq-header-fade-ease) both;
+		transition: none;
+	}
+
+	@keyframes iperq-header-background-out {
+		0% {
+			-webkit-clip-path: inset(0 0 round 16px);
+			clip-path: inset(0 0 round 16px);
+			opacity: 1;
+			box-shadow: 0 18px 42px rgba(29,0,53,.18);
+		}
+
+		99% {
+			-webkit-clip-path: inset(0 0 round 16px);
+			clip-path: inset(0 0 round 16px);
+			opacity: 0;
+			box-shadow: 0 0 0 rgba(29,0,53,0);
+		}
+
+		100% {
+			-webkit-clip-path: inset(0 50% round 16px);
+			clip-path: inset(0 50% round 16px);
+			opacity: 0;
+			box-shadow: 0 0 0 rgba(29,0,53,0);
+		}
+	}
+
+	.biz-header.is-desktop-compact {
+		height: 93px;
+		padding: 16px 0;
+	}
+
+	.biz-header.is-desktop-compact .biz-header__container {
+		width: 650px;
+		max-width: 650px;
+		padding: 0;
+		border-radius: 16px;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	.biz-header.is-desktop-compact .biz-header__container::before {
+		-webkit-clip-path: inset(0 0 round 16px);
+		clip-path: inset(0 0 round 16px);
+		box-shadow: 0 18px 42px rgba(29,0,53,.18);
+	}
+
+	.biz-header.is-desktop-compact .biz-nav {
+		height: 61px;
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__group--left {
+		max-width: 0;
+		overflow: visible;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		/* Left-side navigation is pulled inward before it disappears. */
+		transform: translate3d(56px,0,0) scale(.985);
+		transition:
+			opacity .34s var(--iperq-header-fade-ease),
+			transform .64s var(--iperq-header-morph-ease),
+			max-width .34s var(--iperq-header-morph-ease) .28s,
+			visibility 0s linear .38s;
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__group--right {
+		gap: 0;
+		padding-right: 14px;
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__menu--right {
+		max-width: 0;
+		overflow: visible;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		/* Right-side navigation mirrors the left and converges toward center. */
+		transform: translate3d(-56px,0,0) scale(.985);
+		transition:
+			opacity .34s var(--iperq-header-fade-ease),
+			transform .64s var(--iperq-header-morph-ease),
+			max-width .34s var(--iperq-header-morph-ease) .28s,
+			visibility 0s linear .38s;
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__actions {
+		gap: 0;
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__login,
+	.biz-header.is-desktop-compact .biz-nav__login:visited {
+		width: 0;
+		border-color: transparent;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transform: translate3d(-34px,0,0) scale(.985);
+		transition:
+			width .3s var(--iperq-header-morph-ease) .30s,
+			opacity .3s var(--iperq-header-fade-ease),
+			transform .58s var(--iperq-header-morph-ease),
+			border-color .24s ease,
+			visibility 0s linear .36s;
+	}
+
+	.biz-header.is-desktop-compact .biz-logo {
+		width: 84px;
+		height: 42px;
+		color: var(--iperq-indigo);
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__started,
+	.biz-header.is-desktop-compact .biz-nav__started:visited,
+	.biz-header.is-desktop-compact .biz-nav__started:hover,
+	.biz-header.is-desktop-compact .biz-nav__started:focus {
+		width: 112px;
+		height: 44px;
+		gap: 6px;
+		padding: 0;
+		border-color: transparent;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none !important;
+		color: var(--iperq-indigo) !important;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 1;
+		transform: none;
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__started:hover,
+	.biz-header.is-desktop-compact .biz-nav__started:focus {
+		opacity: .72;
+	}
+
+	.biz-header.is-desktop-compact .biz-nav__started img {
+		width: 20px;
+		height: 20px;
+		flex-basis: 20px;
+	}
+
+	.biz-header.is-desktop-compact .biz-menu-toggle {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateY(-50%) translateX(0) scale(1);
+		transition:
+			opacity .34s var(--iperq-header-fade-ease) .24s,
+			transform .52s var(--iperq-header-morph-ease) .18s,
+			visibility 0s linear 0s;
+	}
+}
+
+/* --------------------------------------------------------------------------
+ * Mobile / tablet expandable header
+ * -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+	.biz-header {
+		height: 93px;
+		padding: 16px 0;
+		background: transparent;
+	}
+
+	.biz-header-spacer {
+		height: 93px;
+	}
+
+	.biz-header .biz-header__container {
+		width: calc(100% - 32px);
+		max-width: 670px;
+		padding: 0;
+		border-radius: 16px;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	.biz-header .biz-header__container::before {
+		-webkit-clip-path: inset(0 0 round 16px);
+		clip-path: inset(0 0 round 16px);
+		box-shadow: 0 18px 42px rgba(29,0,53,.18);
+		transition: none;
+	}
+
+	.biz-nav {
+		display: block;
+		height: 61px;
+	}
+
+	.biz-nav > .biz-nav__group--left,
+	.biz-nav__menu--right,
+	.biz-header .biz-nav__login {
+		display: none;
+	}
+
+	.biz-menu-toggle {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateY(-50%) translateX(0);
+		transition:
+			opacity .24s ease,
+			transform .34s var(--iperq-header-morph-ease),
+			visibility 0s linear 0s;
+	}
+
+	/* Logo is centered against the complete mint bar, independent of side content. */
+	.biz-header .biz-nav > .biz-logo {
+		display: flex;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		z-index: 2;
+		align-items: center;
+		justify-content: center;
+		width: 84px;
+		height: 42px;
+		margin: 0;
+		color: var(--iperq-indigo);
+		transform: translate(-50%, -50%);
+	}
+
+	.biz-nav__group--right {
+		display: flex;
+		position: absolute;
+		right: 14px;
+		top: 50%;
+		z-index: 4;
+		justify-content: flex-end;
+		min-width: 0;
+		margin: 0;
+		padding: 0;
+		transform: translateY(-50%);
+	}
+
+	.biz-nav__actions {
+		gap: 0;
+	}
+
+	.biz-header .biz-nav__started,
+	.biz-header .biz-nav__started:visited,
+	.biz-header .biz-nav__started:hover,
+	.biz-header .biz-nav__started:focus {
+		width: 112px;
+		height: 44px;
+		gap: 6px;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none !important;
+		color: var(--iperq-indigo) !important;
+		font-family: "Satoshi", Arial, sans-serif;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 1;
+		transform: none;
+	}
+
+	.biz-header .biz-nav__started:hover,
+	.biz-header .biz-nav__started:focus {
+		opacity: .72;
+	}
+
+	.biz-nav__started img {
+		width: 20px;
+		height: 20px;
+		flex: 0 0 20px;
+	}
+}
+
+@media (max-width: 782px) {
+	body.admin-bar .biz-header {
+		top: 46px;
+	}
+}
+
+@media (max-width: 600px) {
+	/* Existing mobile design: 60px opening spacing and 20px left/right gutters. */
+	.biz-header {
+		height: 121px;
+		padding: 60px 0 0;
+	}
+
+	.biz-header-spacer {
+		height: 121px;
+	}
+
+	.biz-header.is-mobile-scrolled {
+		top: -40px;
+	}
+
+	body.admin-bar .biz-header {
+		top: 46px;
+	}
+
+	body.admin-bar .biz-header.is-mobile-scrolled {
+		top: calc(40px - 70px);
+	}
+
+	.biz-header .biz-header__container {
+		width: calc(100% - 40px);
+		max-width: none;
+	}
+
+	.biz-menu-toggle {
+		left: 14px;
+	}
+
+	.biz-nav__group--right {
+		right: 8px;
+	}
+
+	/* Vertical spacing stays inside the collapsible nav, never on the 0fr grid child. */
+	.biz-mobile-panel__inner {
+		padding: 0 22px;
+	}
+}
+
+@media (max-width: 370px) {
+	.biz-menu-toggle {
+		left: 10px;
+		gap: 5px;
+	}
+
+	.biz-menu-toggle__label {
+		font-size: 13px;
+	}
+
+	.biz-menu-icon {
+		width: 28px;
+		height: 28px;
+		flex-basis: 28px;
+	}
+
+	.biz-header .biz-nav > .biz-logo {
+		width: 72px !important;
+	}
+
+	.biz-nav__group--right {
+		right: 5px;
+	}
+
+	.biz-header .biz-nav__started,
+	.biz-header .biz-nav__started:visited,
+	.biz-header .biz-nav__started:hover,
+	.biz-header .biz-nav__started:focus {
+		width: 101px;
+		font-size: 13px;
+	}
+
+	.biz-mobile-panel__inner {
+		padding-inline: 18px;
+	}
+
+	.biz-mobile-nav__menu > li > a,
+	.biz-mobile-nav__login {
+		font-size: 36px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.biz-header,
+	.biz-header .biz-header__container,
+	.biz-header .biz-header__container::before,
+	.biz-nav,
+	.biz-nav__group--left,
+	.biz-nav__group--right,
+	.biz-nav__menu--right,
+	.biz-logo,
+	.biz-nav__actions,
+	.biz-nav__action,
+	.biz-nav__started img,
+	.biz-menu-toggle,
+	.biz-mobile-panel,
+	.biz-menu-icon__line,
+	.biz-mobile-nav__menu > li > a,
+	.biz-mobile-nav__login,
+	.biz-mobile-nav__menu .sub-menu,
+	.biz-mobile-nav__menu > .menu-item-has-children > a::after,
+	.biz-nav__menu .sub-menu,
+	.biz-nav__menu > .menu-item-has-children > a::after {
+		transition: none !important;
+	}
+
+	.biz-header.is-desktop-returning .biz-header__container::before {
+		animation: none !important;
+	}
+
+}

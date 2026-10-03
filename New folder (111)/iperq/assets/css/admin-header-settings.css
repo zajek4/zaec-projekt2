@@ -1,0 +1,109 @@
+/* ========================================================================== 
+   IPERQ — Header settings
+   Header-specific controls layered on the shared component settings UI.
+   ========================================================================== */
+
+.iperq-header-settings .iperq-settings-content {
+    max-width: 1040px;
+}
+
+.iperq-header-logo-card {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+}
+
+.iperq-header-logo-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 210px;
+    overflow: hidden;
+    padding: 36px;
+    border: 1px solid rgba(45, 0, 81, .12);
+    border-radius: 14px;
+    background:
+        radial-gradient(circle at 75% 18%, rgba(0, 235, 174, .10), transparent 32%),
+        #1d0035;
+}
+
+.iperq-header-logo-preview img {
+    display: block;
+    width: auto;
+    max-width: 220px;
+    max-height: 104px;
+    object-fit: contain;
+}
+
+.iperq-header-logo-preview.is-empty::before {
+    color: rgba(255,255,255,.65);
+    font-size: 13px;
+    content: "Theme default logo";
+}
+
+.iperq-header-logo-card__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 0;
+    padding: 8px 4px;
+}
+
+.iperq-header-logo-card__content > p {
+    max-width: 620px;
+    margin: 8px 0 18px;
+    color: var(--iperq-admin-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.iperq-header-logo-card__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.iperq-header-logo-select {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 7px;
+}
+
+.iperq-header-logo-select .dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+.iperq-sync-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 20px;
+    padding: 9px 11px;
+    border-radius: 8px;
+    background: var(--iperq-admin-accent-soft);
+    color: #216e57;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.iperq-sync-note .dashicons {
+    width: 15px;
+    height: 15px;
+    font-size: 15px;
+}
+
+@media (max-width: 1050px) {
+    .iperq-header-logo-card {
+        grid-template-columns: 1fr;
+    }
+
+    .iperq-header-logo-preview {
+        min-height: 170px;
+    }
+}

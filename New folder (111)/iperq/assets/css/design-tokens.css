@@ -1,0 +1,26 @@
+/**
+ * IPERQ design system — global color tokens.
+ * Source: approved Colors artwork.
+ *
+ * Keep component CSS tied to these variables instead of duplicating core hex values.
+ */
+
+:root {
+	--iperq-indigo: #2D0051;
+	--iperq-plum: #5D0092;
+	--iperq-amethyst: #DA62FF;
+	--iperq-mint: #00EBAE;
+	--iperq-smoke: #F2F2F2;
+	--iperq-white: #FFFFFF;
+
+	/* Separator variants from the approved light-mode examples. */
+	--iperq-separator-light-on-white: var(--iperq-smoke);
+	--iperq-separator-light-on-smoke: var(--iperq-white);
+	--iperq-separator-light-on-amethyst: rgb(255 255 255 / 30%);
+	--iperq-separator-light-on-mint: rgb(255 255 255 / 55%);
+
+	/* Separator variants from the approved dark-mode examples. */
+	--iperq-separator-dark-on-indigo: var(--iperq-plum);
+	--iperq-separator-dark-on-amethyst: rgb(93 0 146 / 20%);
+	--iperq-separator-dark-on-mint: rgb(93 0 146 / 15%);
+}
