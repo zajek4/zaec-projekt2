@@ -59,7 +59,7 @@ $header_logo_url      = custom_theme_get_header_logo_url();
 									<li class="menu-item"><a href="#">Customer Experience</a></li>
 								</ul>
 							</li>
-							<li class="menu-item"><a href="#">For Customers</a></li>
+							<li class="menu-item"><a href="<?php echo esc_url( home_url( '/for-customers/' ) ); ?>">For Customers</a></li>
 							<li class="menu-item"><a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">Pricing</a></li>
 						</ul>
 					<?php endif; ?>
@@ -132,7 +132,7 @@ $header_logo_url      = custom_theme_get_header_logo_url();
 									<li class="menu-item"><a href="#">Customer Experience</a></li>
 								</ul>
 							</li>
-							<li class="menu-item"><a href="#">For Customers</a></li>
+							<li class="menu-item"><a href="<?php echo esc_url( home_url( '/for-customers/' ) ); ?>">For Customers</a></li>
 							<li class="menu-item"><a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">Pricing</a></li>
 						</ul>
 					<?php endif; ?>
