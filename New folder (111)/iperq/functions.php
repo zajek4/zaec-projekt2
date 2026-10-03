@@ -116,6 +116,41 @@ function custom_theme_is_pricing_page() {
 }
 
 /**
+ * For Customers template helper.
+ */
+function custom_theme_is_customers_page() {
+	return is_page_template( 'template-parts/customers-page.php' );
+}
+
+/**
+ * App Store / Google Play badge pair used by the For Customers page and its footer CTA.
+ *
+ * @param string $variant 'white' (on dark backgrounds) or 'indigo' (on light cards).
+ * @param string $class   Extra wrapper class.
+ */
+function custom_theme_store_badges( $variant = 'white', $class = '' ) {
+	$variant = 'indigo' === $variant ? 'indigo' : 'white';
+	$base    = get_template_directory_uri() . '/assets/images/customers/';
+	$links   = apply_filters(
+		'custom_theme_store_links',
+		array(
+			'app_store'   => '#',
+			'google_play' => '#',
+		)
+	);
+	?>
+	<div class="iperq-store-badges iperq-store-badges--<?php echo esc_attr( $variant ); ?><?php echo $class ? ' ' . esc_attr( $class ) : ''; ?>">
+		<a class="iperq-store-badge iperq-store-badge--app-store" href="<?php echo esc_url( $links['app_store'] ); ?>">
+			<img src="<?php echo esc_url( $base . 'app-store-' . $variant . '.svg' ); ?>" width="160" height="53" loading="lazy" decoding="async" alt="Download on the App Store">
+		</a>
+		<a class="iperq-store-badge iperq-store-badge--google-play" href="<?php echo esc_url( $links['google_play'] ); ?>">
+			<img src="<?php echo esc_url( $base . 'google-play-' . $variant . '.svg' ); ?>" width="180" height="53" loading="lazy" decoding="async" alt="Get it on Google Play">
+		</a>
+	</div>
+	<?php
+}
+
+/**
  * Custom templates that manage their own full-width content area.
  */
 function custom_theme_is_full_width_layout() {
@@ -127,6 +162,7 @@ function custom_theme_is_full_width_layout() {
 		array(
 			'naslovnica.php',
 			'template-parts/pricing-page.php',
+			'template-parts/customers-page.php',
 			'template-scroll-phone-demo.php',
 		)
 	);
@@ -138,6 +174,7 @@ function custom_theme_is_full_width_layout() {
 function custom_theme_scripts() {
 	$is_business_landing = custom_theme_is_business_landing();
 	$is_pricing_page     = custom_theme_is_pricing_page();
+	$is_customers_page   = custom_theme_is_customers_page();
 	$is_scroll_phone_demo = is_page_template( 'template-scroll-phone-demo.php' );
 	$is_legacy_front      = is_page_template( 'naslovnica-v1.php' );
 
@@ -214,11 +251,21 @@ function custom_theme_scripts() {
 		CUSTOM_THEME_VERSION
 	);
 
-	if ( $is_pricing_page ) {
+	/* The For Customers page reuses the shared .pricing-faq accordion styles. */
+	if ( $is_pricing_page || $is_customers_page ) {
 		wp_enqueue_style(
 			'custom-theme-pricing',
 			get_template_directory_uri() . '/assets/css/pricing.css',
 			array( 'custom-theme-style', 'custom-theme-business-footer' ),
+			CUSTOM_THEME_VERSION
+		);
+	}
+
+	if ( $is_customers_page ) {
+		wp_enqueue_style(
+			'custom-theme-customers',
+			get_template_directory_uri() . '/assets/css/customers.css',
+			array( 'custom-theme-pricing', 'custom-theme-business-footer' ),
 			CUSTOM_THEME_VERSION
 		);
 	}
@@ -235,6 +282,16 @@ function custom_theme_scripts() {
 		wp_enqueue_script(
 			'custom-theme-pricing',
 			get_template_directory_uri() . '/assets/js/pricing-page.js',
+			array(),
+			CUSTOM_THEME_VERSION,
+			true
+		);
+	}
+
+	if ( $is_customers_page ) {
+		wp_enqueue_script(
+			'custom-theme-customers',
+			get_template_directory_uri() . '/assets/js/customers-page.js',
 			array(),
 			CUSTOM_THEME_VERSION,
 			true
@@ -273,7 +330,7 @@ add_action( 'wp_enqueue_scripts', 'custom_theme_scripts' );
  * on-demand WOFF2 requests so we do not compete with the hero visual for bandwidth.
  */
 function custom_theme_preload_critical_fonts() {
-	if ( ! custom_theme_is_business_landing() && ! custom_theme_is_pricing_page() ) {
+	if ( ! custom_theme_is_business_landing() && ! custom_theme_is_pricing_page() && ! custom_theme_is_customers_page() ) {
 		return;
 	}
 
@@ -320,6 +377,10 @@ add_action( 'wp_head', 'custom_theme_scroll_phone_preload', 1 );
 function custom_theme_body_classes( $classes ) {
 	if ( is_page_template( 'template-scroll-phone-demo.php' ) ) {
 		$classes[] = 'scroll-phone-template';
+	}
+
+	if ( custom_theme_is_customers_page() ) {
+		$classes[] = 'iperq-customers-template';
 	}
 
 	if ( is_active_sidebar( 'sidebar-1' ) && ! is_page_template( 'template-full-width.php' ) ) {

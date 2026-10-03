@@ -10,6 +10,8 @@
 
 $is_full_width_layout = custom_theme_is_full_width_layout();
 $is_pricing_page      = function_exists( 'custom_theme_is_pricing_page' ) && custom_theme_is_pricing_page();
+$is_customers_page    = function_exists( 'custom_theme_is_customers_page' ) && custom_theme_is_customers_page();
+$footer_cta_modifier  = $is_pricing_page ? ' biz-footer-cta--pricing' : ( $is_customers_page ? ' biz-footer-cta--customers' : '' );
 $footer_settings      = custom_theme_get_footer_settings();
 $footer_assets        = get_template_directory_uri() . '/assets/images/footer/';
 $footer_logo_url      = custom_theme_footer_image_url(
@@ -24,7 +26,7 @@ $footer_logo_url      = custom_theme_footer_image_url(
 
 	<footer class="biz-footer" aria-label="Site footer">
 		<div class="container biz-footer__container">
-			<section class="biz-footer-cta<?php echo $is_pricing_page ? ' biz-footer-cta--pricing' : ''; ?>" aria-labelledby="footer-cta-title">
+			<section class="biz-footer-cta<?php echo esc_attr( $footer_cta_modifier ); ?>" aria-labelledby="footer-cta-title">
 				<img class="biz-footer-cta__illustration" src="<?php echo esc_url( $footer_assets . 'footer-illustration.svg' ); ?>" width="247" height="253" loading="lazy" decoding="async" alt="">
 
 				<div class="biz-footer-cta__content">
@@ -37,6 +39,10 @@ $footer_logo_url      = custom_theme_footer_image_url(
 								<img class="biz-footer-cta__arrow" src="<?php echo esc_url( $footer_assets . 'arrow-right.svg' ); ?>" alt="">
 							</a>
 						</div>
+					<?php elseif ( $is_customers_page ) : ?>
+						<h2 class="biz-footer-cta__title" id="footer-cta-title">Staying loyal is one tap away!</h2>
+						<p class="biz-footer-cta__copy">Keep your loyalty programs together, from your morning coffee spot to your favourite lunch stop. Download IPERQ app!</p>
+						<?php custom_theme_store_badges( 'indigo', 'biz-footer-cta__actions' ); ?>
 					<?php else : ?>
 						<?php if ( ! empty( $footer_settings['cta']['title'] ) ) : ?>
 							<h2 class="biz-footer-cta__title" id="footer-cta-title"><?php echo esc_html( $footer_settings['cta']['title'] ); ?></h2>
