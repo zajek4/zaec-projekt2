@@ -218,7 +218,6 @@ body.iperq-customers-template {
 }
 
 .cust-phone--hero .cust-phone__screen {
-	height: calc(843.62 * var(--u)) !important;
 	border-radius: calc(48.5 * var(--u));
 }
 
