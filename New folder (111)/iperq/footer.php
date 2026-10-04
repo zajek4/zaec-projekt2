@@ -13,6 +13,12 @@ $is_pricing_page      = function_exists( 'custom_theme_is_pricing_page' ) && cus
 $is_customers_page    = function_exists( 'custom_theme_is_customers_page' ) && custom_theme_is_customers_page();
 $footer_cta_modifier  = $is_pricing_page ? ' biz-footer-cta--pricing' : ( $is_customers_page ? ' biz-footer-cta--customers' : '' );
 $footer_settings      = custom_theme_get_footer_settings();
+
+/* "Talk to us" falls back to the contact form on the Pricing page while no URL is set in Settings > Footer. */
+$footer_cta_secondary_url = trim( (string) $footer_settings['cta']['secondary_url'] );
+if ( '' === $footer_cta_secondary_url || '#' === $footer_cta_secondary_url ) {
+	$footer_cta_secondary_url = home_url( '/pricing/#book-a-demo' );
+}
 $footer_assets        = get_template_directory_uri() . '/assets/images/footer/';
 $footer_logo_url      = custom_theme_footer_image_url(
 	$footer_settings['brand']['logo_id'],
@@ -62,7 +68,7 @@ $footer_logo_url      = custom_theme_footer_image_url(
 								<?php endif; ?>
 
 								<?php if ( ! empty( $footer_settings['cta']['secondary_label'] ) ) : ?>
-									<a class="biz-btn biz-btn--light" href="<?php echo esc_url( $footer_settings['cta']['secondary_url'] ? $footer_settings['cta']['secondary_url'] : '#' ); ?>">
+									<a class="biz-btn biz-btn--light" href="<?php echo esc_url( $footer_cta_secondary_url ); ?>">
 										<?php echo esc_html( $footer_settings['cta']['secondary_label'] ); ?>
 										<img class="biz-footer-cta__arrow" src="<?php echo esc_url( $footer_assets . 'arrow-right.svg' ); ?>" alt="">
 									</a>

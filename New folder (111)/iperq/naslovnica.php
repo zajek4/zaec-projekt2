@@ -13,12 +13,8 @@
 
 $iperq_placeholders = array(
 	'hero'      => content_url( '/uploads/2026/09/Donut.svg' ),
-	'calculator'=> content_url( '/uploads/2026/09/Kalkulator.webp' ),
-	'price'     => content_url( '/uploads/2026/09/Price.webp' ),
-	'points'    => content_url( '/uploads/2026/09/Points.webp' ),
 	'setup'     => content_url( '/uploads/2026/09/Color_x5F_RGB_x5F_0_x5F_0_x5F_0.svg' ),
 	'team'      => content_url( '/uploads/2026/09/Semua_x5F_Group_x5F_Warna_x5F_SVG.svg' ),
-	'customers' => content_url( '/uploads/2026/09/Semua_x5F_Group_x5F_Warna_x5F_SVG1.svg' ),
 	'program_stamp'  => content_url( '/uploads/2026/09/Component-10.svg' ),
 	'program_coin_1' => content_url( '/uploads/2026/09/Icon-wrapper.svg' ),
 	'program_coin_2' => content_url( '/uploads/2026/09/Icon-wrapper2.svg' ),
@@ -35,6 +31,17 @@ $iperq_placeholders = array(
 	'cta'       => 'https://placehold.co/300x190/f3eff5/4b006e?text=CTA+illustration',
 );
 
+/*
+ * Theme-bundled artwork (Figma PORPAVCI update): new hero devices, the
+ * "Your customers stay loyal." illustration, Scan & Collect and Reward Your
+ * Customers. The phone screens are shared with the For Customers page.
+ */
+$iperq_business_assets  = get_template_directory_uri() . '/assets/images/business/';
+$iperq_customers_assets = get_template_directory_uri() . '/assets/images/customers/';
+
+/* "Talk To Us" / "Book a Demo" lead to the contact form on the Pricing page. */
+$iperq_contact_url = home_url( '/pricing/#book-a-demo' );
+
 get_header();
 ?>
 
@@ -45,33 +52,20 @@ get_header();
 				<p class="biz-copy biz-hero__intro iperq-hero-lead">Bring a digital loyalty program to your restaurants, cafés &amp; bars. Connect your business with a dedicated cashier app for your team &amp; a rewards app for your customers.</p>
 				<div class="biz-actions">
 					<a class="biz-btn biz-btn--mint iperq-hero-control" href="#get-started">Get Started <span class="biz-btn__arrow">→</span></a>
-					<a class="biz-btn iperq-hero-control" href="#">Talk To Us <span class="biz-btn__arrow">→</span></a>
+					<a class="biz-btn iperq-hero-control" href="<?php echo esc_url( $iperq_contact_url ); ?>">Talk To Us <span class="biz-btn__arrow">→</span></a>
 				</div>
 				<p class="biz-hero__note iperq-caption">Set up the program yourself, or talk to our team first.</p>
 				<img class="biz-hero__art biz-placeholder" src="<?php echo esc_url( $iperq_placeholders['hero'] ); ?>" width="206" height="221" decoding="async" alt="Placeholder for hero illustration">
 			</div>
 	
-			<div class="biz-pos" aria-label="Cashier app preview">
-				<picture>
-					<source media="(max-width: 600px)" type="image/webp" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/business/points-request-mobile.webp' ); ?>">
-					<source media="(max-width: 600px)" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/business/points-request-mobile.png' ); ?>">
-					<img class="biz-pos__mobile-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" width="390" height="229" loading="eager" decoding="async" fetchpriority="high" alt="Points request cashier interface">
-				</picture>
-
-				<picture>
-					<source media="(min-width: 601px)" srcset="<?php echo esc_url( $iperq_placeholders['calculator'] ); ?>">
-					<img class="biz-pos__image biz-pos__image--calculator" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" loading="eager" decoding="async" fetchpriority="high" alt="Cashier calculator interface">
-				</picture>
-
-				<picture>
-					<source media="(min-width: 601px)" srcset="<?php echo esc_url( $iperq_placeholders['price'] ); ?>">
-					<img class="biz-pos__image biz-pos__image--price" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" loading="eager" decoding="async" alt="Receipt price interface">
-				</picture>
-
-				<picture>
-					<source media="(min-width: 601px)" srcset="<?php echo esc_url( $iperq_placeholders['points'] ); ?>">
-					<img class="biz-pos__image biz-pos__image--points" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" loading="eager" decoding="async" alt="Points transaction interface">
-				</picture>
+			<div class="biz-pos" aria-label="IPERQ cashier and customer apps">
+				<div class="biz-device biz-device--cashier">
+					<img class="biz-device__screen" src="<?php echo esc_url( $iperq_business_assets . 'cashier-award-points.webp' ); ?>" width="1280" height="800" loading="eager" decoding="async" fetchpriority="high" alt="Cashier app: points request for a 24.50 receipt">
+				</div>
+				<div class="biz-device biz-device--phone">
+					<img class="biz-device__screen" src="<?php echo esc_url( $iperq_customers_assets . 'home-screen.webp' ); ?>" width="402" height="874" loading="eager" decoding="async" alt="IPERQ customer app with saved loyalty programs">
+				</div>
+				<img class="biz-device biz-device--scan" src="<?php echo esc_url( $iperq_business_assets . 'cashier-scan-app.webp' ); ?>" width="1280" height="800" loading="eager" decoding="async" alt="Cashier app scanning a customer QR code">
 			</div>
 		</section>
 	
@@ -84,7 +78,7 @@ get_header();
 				<div class="biz-step-grid">
 					<article class="biz-step-card"><h3 class="iperq-heading-lg">You set the reward system.</h3><p class="iperq-text-sm">Register your business and choose the food &amp; drinks categories of your offer &amp; set the rewards.</p><img src="<?php echo esc_url( $iperq_placeholders['setup'] ); ?>" loading="lazy" decoding="async" alt="Reward system illustration"></article>
 					<article class="biz-step-card"><h3 class="iperq-heading-lg">Your team makes it happen.</h3><p class="iperq-text-sm">Staff scan customer QR codes in the cashier app to award stamps &amp; points or approve rewards &amp; discounts.</p><img src="<?php echo esc_url( $iperq_placeholders['team'] ); ?>" loading="lazy" decoding="async" alt="Staff illustration"></article>
-					<article class="biz-step-card"><h3 class="iperq-heading-lg">Your customers stay loyal.</h3><p class="iperq-text-sm">Customers track their progress &amp; show their QR code when it's time to collect or redeem.</p><img src="<?php echo esc_url( $iperq_placeholders['customers'] ); ?>" loading="lazy" decoding="async" alt="Customer loyalty illustration"></article>
+					<article class="biz-step-card"><h3 class="iperq-heading-lg">Your customers stay loyal.</h3><p class="iperq-text-sm">Customers track their progress &amp; show their QR code when it's time to collect or redeem.</p><img class="biz-step-card__art--customers" src="<?php echo esc_url( $iperq_business_assets . 'customers-stay-loyal.svg' ); ?>" width="149" height="199" loading="lazy" decoding="async" alt="Customer holding a coffee cup with the IPERQ QR code"></article>
 				</div>
 			</div>
 		</section>
@@ -106,6 +100,13 @@ get_header();
 			</div>
 		</section>
 	
+		<section class="biz-track biz-collect" aria-label="Scan and collect">
+			<div class="biz-shell">
+				<h2 class="biz-track__word biz-collect__word"><span>Scan</span><span>&amp; Collect</span></h2>
+				<img class="biz-collect-image" src="<?php echo esc_url( $iperq_business_assets . 'cashier-scan-app.webp' ); ?>" width="1280" height="800" loading="lazy" decoding="async" alt="Cashier app asking the customer to show their QR code">
+			</div>
+		</section>
+	
 		<section class="biz-section biz-walkthrough" id="walkthrough">
 			<div class="biz-shell">
 				<div class="biz-section-head">
@@ -119,7 +120,27 @@ get_header();
 					<article class="biz-walk-card" tabindex="0"><div class="biz-walk-card__top"><span class="biz-walk-card__num">04</span><span class="biz-walk-card__icon"><img src="<?php echo esc_url( $iperq_placeholders['walk_search'] ); ?>" loading="lazy" decoding="async" alt=""></span></div><h3>Keep recent activity in view</h3><p>Check recent transactions and their status with organized requests handled from one place.</p></article>
 				</div>
 				<div class="biz-dots"><i></i><i></i><i></i></div>
-				<div class="biz-demo-row"><span class="iperq-caption">Ready to deploy this to your tablets?</span><a class="biz-btn biz-btn--mint iperq-button-label" href="#">Book a Demo <span>→</span></a></div>
+				<div class="biz-demo-row"><span class="iperq-caption">Ready to deploy this to your tablets?</span><a class="biz-btn biz-btn--mint iperq-button-label" href="<?php echo esc_url( $iperq_contact_url ); ?>">Book a Demo <span>→</span></a></div>
+			</div>
+		</section>
+	
+		<section class="biz-reward" id="rewards">
+			<div class="biz-reward-grid">
+				<div class="biz-reward-art" aria-label="Customer rewards previews">
+					<img class="biz-reward-insights" src="<?php echo esc_url( $iperq_placeholders['analytics_insights'] ); ?>" width="434" height="318" loading="lazy" decoding="async" alt="Insights: 48 stamps and 13 rewards in the last 6 months">
+					<div class="biz-reward-stats">
+						<p class="biz-reward-stats__item"><strong>12</strong><span>Stamp-based</span></p>
+						<p class="biz-reward-stats__item"><strong>4</strong><span>Point-based</span></p>
+					</div>
+					<div class="biz-device biz-device--reward">
+						<img class="biz-device__screen" src="<?php echo esc_url( $iperq_customers_assets . 'establishment-screen.webp' ); ?>" width="402" height="1685" loading="lazy" decoding="async" alt="Coffee House Cafe stamp cards and rewards in the IPERQ app">
+					</div>
+				</div>
+				<div class="biz-reward-copy">
+					<h2 class="biz-title biz-title--mint iperq-heading-xl">Reward Your Customers</h2>
+					<p class="biz-copy iperq-text-md">Give customers rewards and discounts they can earn through your loyalty program. They can track their progress and see what’s ready to redeem in the IPERQ app.</p>
+					<a class="biz-btn biz-btn--mint iperq-button-label" href="<?php echo esc_url( home_url( '/for-customers/' ) ); ?>">Customer Experience <span>→</span></a>
+				</div>
 			</div>
 		</section>
 	
