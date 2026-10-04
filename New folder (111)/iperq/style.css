@@ -4,7 +4,7 @@ Theme URI: https://example.com
 Author: Michel Studio
 Author URI: https://example.com
 Description: Minimalna starter WordPress tema spremna za nadogradnju. Sadrži osnovnu strukturu, template hijerarhiju i podršku za standardne WP značajke.
-Version: 1.0.52
+Version: 1.0.53
 Requires at least: 6.0
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -44,8 +44,15 @@ body {
     overflow-x: clip;
 }
 @media (min-width: 600px){
+	/* Violet glow canvas from the For Businesses page (tokens in design-tokens.css),
+	   with glows alternating sides down the Pricing and standard pages. */
 	body {
-		background-image: url("https://dev.michel.hr/iperq/wp-content/uploads/2026/09/Pozadina-scaled.webp");
+		background-image:
+			radial-gradient(circle at 95% 9%, var(--iperq-glow-violet), transparent 22%),
+			radial-gradient(circle at 4% 33%, var(--iperq-glow-purple), transparent 24%),
+			radial-gradient(circle at 94% 57%, var(--iperq-glow-orchid), transparent 22%),
+			radial-gradient(circle at 6% 85%, var(--iperq-glow-purple), transparent 22%),
+			var(--iperq-canvas-base);
 	}
 }
 
@@ -724,10 +731,10 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 			min-height: 100vh;
 			overflow: hidden;
 			background:
-				radial-gradient(circle at 95% 16%, rgba(145, 0, 255, .78), transparent 22%),
-				radial-gradient(circle at 7% 28%, rgba(112, 0, 210, .78), transparent 24%),
-				radial-gradient(circle at 89% 58%, rgba(137, 0, 245, .88), transparent 25%),
-				linear-gradient(180deg, #360054 0%, #390057 35%, #240039 100%);
+				radial-gradient(circle at 95% 16%, var(--iperq-glow-violet), transparent 22%),
+				radial-gradient(circle at 7% 28%, var(--iperq-glow-purple), transparent 24%),
+				radial-gradient(circle at 89% 58%, var(--iperq-glow-orchid), transparent 25%),
+				var(--iperq-canvas-base);
 			color: var(--biz-white);
 			font-family: "Satoshi", Arial, sans-serif;
 			font-size: 16px;
@@ -786,7 +793,7 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 
 .business-page .biz-btn__arrow {font-size: 18px; line-height: 1;}
 
-.business-page .biz-hero {padding: 82px 0 45px; text-align: center;}
+.business-page .biz-hero {padding: 82px 0 29px; text-align: center;}
 
 .business-page .biz-hero__content {position: relative; z-index: 2;}
 
@@ -806,8 +813,34 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 
 .business-page .biz-placeholder {border-radius: 22px; opacity: .96; mix-blend-mode: screen;}
 
-.business-page .biz-pos {position: relative; width: min(960px, 94%); height: 470px; margin: 90px auto 0;}
-.business-page .biz-pos > picture {display: contents;}
+.business-page {--biz-u: calc(100cqw / 1360); --biz-ru: calc(100cqw / 821); --biz-glow: 0 0 40px rgba(0, 235, 174, .25), 0 4px 15px rgba(0, 235, 174, .15);}
+
+/* Hero devices (Figma PORPAVCI): 1360 × 758 composition that scales with its container.
+   --biz-u = 1 Figma px inside .biz-pos. */
+.business-page .biz-pos {position: relative; width: min(1360px, calc(100% - 48px)); height: auto; aspect-ratio: 1360 / 758; margin: 86px auto 0; container-type: inline-size;}
+
+.business-page .biz-device {position: absolute; display: block; max-width: none;}
+
+.business-page .biz-device__screen {position: absolute; top: 0; left: 0; display: block; max-width: none;}
+
+/* Device frames are drawn over the screenshot, as in Figma (the image starts under the border). */
+.business-page .biz-device--cashier::after,
+.business-page .biz-device--phone::after,
+.business-page .biz-device--reward::after {content: ""; position: absolute; inset: 0; z-index: 1; border: solid #2d0051; border-radius: inherit; pointer-events: none;}
+
+.business-page .biz-device--cashier {top: 0; left: calc(128 * var(--biz-u)); z-index: 1; width: calc(1128 * var(--biz-u)); height: calc(675 * var(--biz-u)); overflow: hidden; border-radius: calc(40 * var(--biz-u)); background: #fff; filter: drop-shadow(16px 18px 23.4px rgba(45, 0, 81, .25));}
+
+.business-page .biz-device--cashier::after {border-width: calc(18 * var(--biz-u));}
+
+.business-page .biz-device--cashier .biz-device__screen {left: calc(13.45 * var(--biz-u)); width: calc(1101.1 * var(--biz-u)); height: calc(687.3 * var(--biz-u));}
+
+.business-page .biz-device--phone {top: calc(200 * var(--biz-u)); left: calc(1054 * var(--biz-u)); z-index: 2; width: calc(267 * var(--biz-u)); height: calc(558 * var(--biz-u)); overflow: hidden; border-radius: calc(40 * var(--biz-u)); background: #2d0051; box-shadow: var(--biz-glow);}
+
+.business-page .biz-device--phone::after {border-width: calc(10 * var(--biz-u));}
+
+.business-page .biz-device--phone .biz-device__screen {width: 100%; height: auto;}
+
+.business-page .biz-device--scan {top: calc(338 * var(--biz-u)); left: calc(-9 * var(--biz-u)); z-index: 3; width: calc(672 * var(--biz-u)); height: auto;}
 
 .business-page .biz-pos__window {position: absolute;
 			inset: 0 65px 20px 65px;
@@ -864,18 +897,8 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 
 .business-page .biz-receipt__meta {display: flex; justify-content: space-between; margin-top: 16px; color: #74677f; font-size: 10px; line-height: 1.6;}
 
-.business-page .biz-pos__image {position: absolute; display: block; height: auto; max-width: none;}
-
-.business-page .biz-pos__mobile-image {display: none;}
-
 .business-page .biz-title-break--mobile,
 .business-page .biz-title-mobile-prefix {display: none;}
-
-.business-page .biz-pos__image--calculator {left: 50%; bottom: 0; z-index: 1; width: 78%; transform: translateX(-50%); filter: drop-shadow(0 24px 35px rgba(17,0,29,.32));}
-
-.business-page .biz-pos__image--price {left: 0; top: 42px; z-index: 2; width: 55%; filter: drop-shadow(0 18px 25px rgba(17,0,29,.2));}
-
-.business-page .biz-pos__image--points {right: 0; top: 18px; z-index: 3; width: 49%; filter: drop-shadow(0 18px 25px rgba(17,0,29,.2));}
 
 .business-page .biz-how {padding-top: 90px;}
 
@@ -900,6 +923,12 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 .business-page .biz-step-card p {min-height: 0; margin: 16px 0 0; color: #6d5a79; font-family: "Satoshi", Arial, sans-serif; font-size: 20px; font-weight: 400; font-style: normal; line-height: 32.5px; letter-spacing: 0;}
 
 .business-page .biz-step-card img {flex: 0 0 auto; width: 243.6459197998047px; height: 189.99993896484375px; max-width: 100%; margin-top: 40px; object-fit: contain; object-position: left bottom; border-radius: 0;}
+
+.business-page .biz-step-card img.biz-step-card__art--customers {width: 148.39px; height: 198.86px;}
+
+@media (max-width: 1200px) {
+	.business-page .biz-step-card {height: auto; min-height: 524px;}
+}
 
 .business-page .biz-program {padding: 170px 0 130px;}
 
@@ -1009,10 +1038,10 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 			-webkit-text-stroke: 2px var(--biz-mint);
 			text-shadow: none;
 			font-family: "Author", sans-serif;
-			font-size: 367px;
+			font-size: min(367px, (100vw - 48px) * .27);
 			font-weight: 700;
 			font-style: normal;
-			line-height: 258px;
+			line-height: min(258px, (100vw - 48px) * .19);
 			letter-spacing: -1.8px;}
 
 .business-page .biz-track__word span {display: block;}
@@ -1047,6 +1076,49 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 .business-page .biz-dashboard__panel div:nth-of-type(2) {width: 80%; background: var(--biz-mint);}
 
 .business-page .biz-track-image {position: absolute; top: -80px; left: calc(50% + 21.84px); right: auto; z-index: 2; display: block; width: 606.5200279154705px; height: 363.43817641070086px; border: 0; border-radius: 22px; object-fit: cover; transform: rotate(9.19deg); transform-origin: center; filter: drop-shadow(0 28px 35px rgba(14,0,25,.4));}
+
+/* Scan & Collect (Figma PORPAVCI): same outlined-word treatment as Track Analytics, words aligned right. */
+.business-page .biz-collect {min-height: 0; padding: 128px 0 130px;}
+
+/* The shell is a size container, so the composition scales with it below 1360px. */
+.business-page .biz-collect .biz-shell {position: relative; container-type: inline-size;}
+
+.business-page .biz-collect__word {max-width: none; margin: calc(274.6 * var(--biz-u)) calc(-6 * var(--biz-u)) 0 0; font-size: calc(367 * var(--biz-u)); line-height: calc(258 * var(--biz-u)); text-align: right;}
+
+.business-page .biz-collect-image {position: absolute; top: calc(91 * var(--biz-u)); left: calc(9.37 * var(--biz-u)); z-index: 2; display: block; width: calc(718.1 * var(--biz-u)); height: auto; max-width: none; transform: rotate(-7.28deg); transform-origin: 0 0;}
+
+/* Reward Your Customers (Figma PORPAVCI). --biz-ru = 1 Figma px inside the 821px artwork. */
+.business-page .biz-reward {padding: 135px 0 327px;}
+
+.business-page .biz-reward-grid {display: grid; grid-template-columns: minmax(0, 821px) minmax(0, 499px); column-gap: 115px; align-items: start; width: min(1435px, calc(100% - 48px)); margin-left: max(24px, calc(50% - 680px));}
+
+.business-page .biz-reward-art {position: relative; width: 100%; aspect-ratio: 821 / 693; container-type: inline-size;}
+
+.business-page .biz-reward-insights {position: absolute; top: calc(68 * var(--biz-ru)); left: calc(36 * var(--biz-ru)); z-index: 2; display: block; width: calc(434 * var(--biz-ru)); height: auto; max-width: none;}
+
+.business-page .biz-reward-stats {position: absolute; top: calc(385 * var(--biz-ru)); left: calc(-38 * var(--biz-ru)); z-index: 3; display: flex; align-items: center; width: calc(354 * var(--biz-ru)); height: calc(132 * var(--biz-ru)); padding: 0 calc(16 * var(--biz-ru)); border-radius: calc(20 * var(--biz-ru)); background: #fff; box-shadow: var(--biz-glow); color: #2d0051;}
+
+.business-page .biz-reward-stats__item {display: flex; flex: 1 1 0; flex-direction: column; align-items: center; justify-content: center; height: calc(111 * var(--biz-ru)); margin: 0; font-family: "Author", "Satoshi", sans-serif; font-weight: 600; line-height: 1.1; text-align: center;}
+
+.business-page .biz-reward-stats__item + .biz-reward-stats__item {border-left: 1px solid #f2f2f2;}
+
+.business-page .biz-reward-stats__item strong {font-size: calc(48 * var(--biz-ru)); font-weight: 600;}
+
+.business-page .biz-reward-stats__item span {margin-top: calc(-1 * var(--biz-ru)); font-size: calc(24 * var(--biz-ru));}
+
+.business-page .biz-device--reward {top: 0; left: calc(512 * var(--biz-ru)); z-index: 1; width: calc(337 * var(--biz-ru)); height: calc(693 * var(--biz-ru)); overflow: hidden; border-radius: calc(40 * var(--biz-ru)); background: #2d0051; box-shadow: var(--biz-glow);}
+
+.business-page .biz-device--reward::after {border-width: calc(16 * var(--biz-ru));}
+
+.business-page .biz-device--reward .biz-device__screen {top: calc(-330.8 * var(--biz-ru)); width: 100%; height: auto;}
+
+.business-page .biz-reward-copy {padding-top: 129px;}
+
+.business-page .biz-reward .biz-reward-copy .biz-title {font-family: "Author", "Satoshi", sans-serif; font-size: 72px; font-weight: 700; font-style: normal; line-height: 72px; letter-spacing: -1.8px;}
+
+.business-page .biz-reward .biz-reward-copy .biz-copy {margin: 36px 0 48px; font-family: "Satoshi", Arial, sans-serif; font-size: 24px; font-weight: 400; font-style: normal; line-height: 36px; letter-spacing: 0;}
+
+.business-page .biz-reward .biz-btn--mint {color: #2d0051;}
 
 .business-page .biz-analytics {padding: 240px 0 160px;}
 
@@ -1093,13 +1165,7 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 
 	.business-page .biz-hero__art {display: none;}
 
-	.business-page .biz-pos {height: 430px;}
-
-	.business-page .biz-pos__image--calculator {width: 88%;}
-
-	.business-page .biz-pos__image--price {width: 58%;}
-
-	.business-page .biz-pos__image--points {width: 52%;}
+	.business-page .biz-pos {margin-top: 64px;}
 
 	.business-page .biz-step-grid {grid-template-columns: 1fr;}
 
@@ -1122,7 +1188,17 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 
 	.business-page .biz-track {min-height: 630px;}
 
-	.business-page .biz-track__word {font-size: clamp(150px, 32vw, 260px); line-height: .72;}
+	.business-page .biz-track__word {font-size: min(260px, (100vw - 48px) * .27); line-height: .72;}
+
+	.business-page .biz-collect {padding: 80px 0 100px;}
+
+	.business-page .biz-reward {padding: 100px 0 160px;}
+
+	.business-page .biz-reward-grid {display: flex; flex-direction: column; align-items: center; gap: 60px; width: calc(100% - 48px); margin: 0 auto;}
+
+	.business-page .biz-reward-art {width: min(100%, 680px);}
+
+	.business-page .biz-reward-copy {width: min(100%, 600px); padding-top: 0;}
 
 	.business-page .biz-track-image {top: 170px; left: auto; right: 0; width: 440px; height: auto; aspect-ratio: 606.5200279154705 / 363.43817641070086;}
 }
@@ -1148,10 +1224,13 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 	.business-page .biz-hero__note {margin: 16px 0 0; font-size: 12px; line-height: 18px;}
 	.business-page .biz-hero__art {position: relative; right: auto; bottom: auto; display: block; width: 105px; height: auto; margin: 46px 8px 0 auto; border-radius: 0; opacity: 1; mix-blend-mode: normal;}
 
-	/* Mobile uses the approved full-width cashier composite. The PNG already includes its own visual padding. */
-	.business-page .biz-pos {width: 100%; max-width: none; height: auto; margin: 0 auto;}
-	.business-page .biz-pos__mobile-image {display: block; width: 100%; height: auto; max-width: none;}
-	.business-page .biz-pos__image {display: none;}
+	/* Mobile hero devices: cashier tablet full width, phone and scanner tablet overlapping below it. */
+	.business-page {--biz-u: calc(100cqw / 1180);}
+	.business-page .biz-pos {width: 100%; max-width: none; aspect-ratio: 1180 / 1090; margin: 48px auto 0;}
+	.business-page .biz-device--cashier {left: calc(26 * var(--biz-u));}
+	.business-page .biz-device--phone {top: calc(330 * var(--biz-u)); left: calc(800 * var(--biz-u)); width: calc(360 * var(--biz-u)); height: calc(752 * var(--biz-u)); border-radius: calc(54 * var(--biz-u));}
+	.business-page .biz-device--phone::after {border-width: calc(13.5 * var(--biz-u));}
+	.business-page .biz-device--scan {top: calc(430 * var(--biz-u)); left: calc(-6 * var(--biz-u)); width: calc(760 * var(--biz-u));}
 
 	/* How it works */
 	.business-page .biz-how {padding: 96px 0 150px;}
@@ -1166,6 +1245,7 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 	.business-page .biz-step-card h3 {font-size: 30px; line-height: 28px; letter-spacing: -.6px;}
 	.business-page .biz-step-card p {margin-top: 16px; font-size: 14px; line-height: 20px;}
 	.business-page .biz-step-card img {width: auto; max-width: 100%; height: 180px; margin-top: 32px; object-fit: contain; object-position: left bottom;}
+	.business-page .biz-step-card img.biz-step-card__art--customers {width: auto; height: 180px;}
 
 	/* Loyalty program */
 	.business-page .biz-program {padding: 0 0 150px;}
@@ -1207,6 +1287,21 @@ body.page-template-naslovnica {margin: 0; background: var(--biz-purple);}
 	.business-page .biz-track .biz-shell {width: calc(100% - 40px); max-width: 350px; height: 295px;}
 	.business-page .biz-track__word {position: absolute; top: 150px; left: 0; width: 100%; font-size: 92px; line-height: 72px; letter-spacing: -1px; -webkit-text-stroke-width: 1.5px;}
 	.business-page .biz-track-image {top: 0; right: -8px; left: auto; width: 292px; height: auto; border-radius: 12px; transform: rotate(9.19deg);}
+
+	/* Scan & Collect mirrors the Track Analytics mobile treatment. */
+	.business-page .biz-collect {min-height: 0; padding: 0 0 150px;}
+	.business-page .biz-collect .biz-shell {width: calc(100% - 40px); max-width: 350px; height: 315px;}
+	.business-page .biz-collect__word {position: absolute; top: 170px; right: 0; left: auto; width: 100%; margin: 0; font-size: 92px; line-height: 72px; letter-spacing: -1px; -webkit-text-stroke-width: 1.5px;}
+	.business-page .biz-collect-image {top: 40px; left: -8px; width: 292px;}
+
+	/* Reward Your Customers: copy first, then the phone with the insight cards. */
+	.business-page .biz-reward {padding: 0 0 200px;}
+	.business-page .biz-reward-grid {width: calc(100% - 40px); max-width: 350px; gap: 64px;}
+	.business-page .biz-reward-copy {order: 1; width: 100%; text-align: center;}
+	.business-page .biz-reward-art {order: 2; width: 100%;}
+	.business-page .biz-reward .biz-reward-copy .biz-title {font-size: 44px; line-height: 40px; letter-spacing: -.8px;}
+	.business-page .biz-reward .biz-reward-copy .biz-copy {margin: 24px 0 32px; font-size: 16px; line-height: 24px;}
+	.business-page .biz-reward .biz-btn {width: 100%; min-height: 50px; padding: 14px 18px; font-size: 18px; line-height: 22px;}
 
 	/* Analytics copy first, then the two-part illustration group. */
 	.business-page .biz-analytics {padding: 0 0 150px;}

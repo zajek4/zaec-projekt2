@@ -23,4 +23,12 @@
 	--iperq-separator-dark-on-indigo: var(--iperq-plum);
 	--iperq-separator-dark-on-amethyst: rgb(93 0 146 / 20%);
 	--iperq-separator-dark-on-mint: rgb(93 0 146 / 15%);
+
+	/* Page canvas: the violet glow gradient of the For Businesses page.
+	   Drawn in CSS so it stays sharp at any page height (no stretched bitmap).
+	   Each page places its own radial glows over --iperq-canvas-base. */
+	--iperq-canvas-base: linear-gradient(180deg, #360054 0%, #390057 35%, #240039 100%);
+	--iperq-glow-violet: rgba(145, 0, 255, .78);
+	--iperq-glow-purple: rgba(112, 0, 210, .78);
+	--iperq-glow-orchid: rgba(137, 0, 245, .88);
 }

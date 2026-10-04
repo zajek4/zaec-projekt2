@@ -32,7 +32,14 @@ $custom_theme_glb_url = esc_url( get_template_directory_uri() . '/assets/models/
     font-family: "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     min-height: 100vh;
     overflow-x: clip;
-    background-image: url("https://dev.michel.hr/iperq/wp-content/uploads/2026/09/Pozadina-scaled.webp");
+    background-color: #1D0035;
+    /* Shared violet glow canvas (design-tokens.css) instead of a stretched bitmap. */
+    background-image:
+      radial-gradient(circle at 95% 9%, var(--iperq-glow-violet), transparent 22%),
+      radial-gradient(circle at 4% 33%, var(--iperq-glow-purple), transparent 24%),
+      radial-gradient(circle at 94% 57%, var(--iperq-glow-orchid), transparent 22%),
+      radial-gradient(circle at 6% 85%, var(--iperq-glow-purple), transparent 22%),
+      var(--iperq-canvas-base);
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;

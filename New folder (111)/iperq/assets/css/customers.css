@@ -25,9 +25,17 @@ body.iperq-customers-template {
 }
 
 @media (min-width: 601px) {
-	/* Blurred "Pozadina" ellipses from the Figma frame, rendered to one light image. */
+	/* The Figma "Pozadina" ellipses (alternating left / right down the page),
+	   drawn with the shared violet glow canvas so they stay sharp. */
 	body.iperq-customers-template {
-		background-image: url("../images/customers/customers-background.webp");
+		background-image:
+			radial-gradient(circle at 2% 3%, var(--iperq-glow-purple), transparent 14%),
+			radial-gradient(circle at 88% 16%, var(--iperq-glow-violet), transparent 20%),
+			radial-gradient(circle at 25% 30%, var(--iperq-glow-purple), transparent 20%),
+			radial-gradient(circle at 76% 53%, var(--iperq-glow-orchid), transparent 20%),
+			radial-gradient(circle at 0% 74%, var(--iperq-glow-purple), transparent 20%),
+			radial-gradient(circle at 80% 93%, var(--iperq-glow-violet), transparent 20%),
+			var(--iperq-canvas-base);
 		background-position: center top;
 		background-repeat: no-repeat;
 		background-size: 100% 100%;

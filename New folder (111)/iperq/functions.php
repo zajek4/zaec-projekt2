@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Izlaz ako se datoteci pristupa direktno.
 }
 
-define( 'CUSTOM_THEME_VERSION', '1.0.52' );
+define( 'CUSTOM_THEME_VERSION', '1.0.53' );
 
 /**
  * Postavljanje teme (theme support, meniji, image sizes...)
